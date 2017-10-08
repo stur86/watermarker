@@ -66,7 +66,10 @@ def watermark_photo(photo, wmark, targ_rect=(0.1, 0.1, 0.9, 0.9),
     # Add alpha channel if not present
     photo = photo.convert('RGBA')
     # Now apply watermark
-    photo.alpha_composite(wmark, dest=(int(targ_rect[0]*sp[0]),
-                                       int(targ_rect[1]*sp[1])))
+    try:
+        photo.alpha_composite(wmark, dest=(int(targ_rect[0]*sp[0]),
+                                           int(targ_rect[1]*sp[1])))
+    except ValueError:
+        raise RuntimeError('Watermark is too big')
 
     return photo
